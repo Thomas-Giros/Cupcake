@@ -2,10 +2,14 @@ package com.example.cupcake.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+
+const val CUPCAKE_PRICE = 2.0
+const val SAME_DAY_INCREASE = 3.0
 
 class OrderViewModel: ViewModel() {
     private var _orderQuantity = MutableLiveData<Int>()
@@ -18,10 +22,9 @@ class OrderViewModel: ViewModel() {
     val pickupDate: LiveData<String> = _pickupDate
 
     private var _price = MutableLiveData<Double>()
-    val price: LiveData<Double> = _price
-
-    private var _priceFormatted = MutableLiveData<String>()
-    val priceFormatted: LiveData<String> = _priceFormatted
+    val price: LiveData<String> = Transformations.map(_price) {
+        NumberFormat.getCurrencyInstance().format(it)
+    }
 
     init {
         resetOrder()
@@ -29,7 +32,7 @@ class OrderViewModel: ViewModel() {
 
     fun setQuantity(numberCupcakes: Int){
         _orderQuantity.value = numberCupcakes
-        priceToFormattedString()
+        calculatePrice()
     }
 
     fun hasNoFlavorSet(): Boolean {
@@ -42,7 +45,7 @@ class OrderViewModel: ViewModel() {
 
     fun setDate(pickupDate: String){
         _pickupDate.value = pickupDate
-        priceToFormattedString()
+        calculatePrice()
     }
 
     fun pickupDatesValues(): List<String> {
@@ -58,17 +61,12 @@ class OrderViewModel: ViewModel() {
     }
 
     fun calculatePrice(){
-        var totalPrice = orderQuantity.value!! * 2.0
+        var totalPrice = (orderQuantity.value ?: 0) * CUPCAKE_PRICE
 
-        if (pickupDate.value!! == pickupDatesValues()[0])
-            totalPrice += 3.0
+        if (_pickupDate.value == pickupDatesValues()[0])
+            totalPrice += SAME_DAY_INCREASE
 
         _price.value = totalPrice
-    }
-
-    fun priceToFormattedString(){
-        calculatePrice()
-        _priceFormatted.value = NumberFormat.getCurrencyInstance().format(price.value)
     }
 
     /*
@@ -79,7 +77,7 @@ class OrderViewModel: ViewModel() {
         _cupCakeFlavor.value = ""
         _pickupDate.value = pickupDatesValues()[0]
         _price.value = 0.0
-        priceToFormattedString()
+        calculatePrice()
     }
 
 }
