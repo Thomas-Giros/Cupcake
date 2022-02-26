@@ -40,7 +40,7 @@ class StartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val fragmentBinding = FragmentStartBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
@@ -59,9 +59,6 @@ class StartFragment : Fragment() {
     fun orderCupcake(quantity: Int) {
         //Toast.makeText(activity, "Ordered $quantity cupcake(s)", Toast.LENGTH_SHORT).show()
         sharedViewModel.setQuantity(quantity)
-        if (sharedViewModel.hasNoFlavorSet()) {
-            sharedViewModel.setFlavor(getString(R.string.vanilla))
-        }
 
         findNavController().navigate(R.id.action_startFragment_to_flavorFragment)
 

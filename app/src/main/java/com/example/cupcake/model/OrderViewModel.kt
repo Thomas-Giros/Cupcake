@@ -15,8 +15,14 @@ class OrderViewModel: ViewModel() {
     private var _orderQuantity = MutableLiveData<Int>()
     val orderQuantity: LiveData<Int> = _orderQuantity
 
-    private var _cupCakeFlavor = MutableLiveData<String>()
-    val cupCakeFlavor: LiveData<String> = _cupCakeFlavor
+    private var _totalOrderedQuantity = MutableLiveData<Int>()
+    val totalOrderedQuantity: LiveData<Int> = _totalOrderedQuantity
+
+    private var _orderedQuantityPerFlavor = MutableLiveData<MutableMap<String,Int>>()
+    val orderedQuantityPerFlavor: LiveData<MutableMap<String,Int>> = _orderedQuantityPerFlavor
+
+    private var _cupCakeFlavors = MutableLiveData<MutableList<String>>()
+    val cupCakeFlavors: LiveData<MutableList<String>> = _cupCakeFlavors
 
     private var _pickupDate = MutableLiveData<String>()
     val pickupDate: LiveData<String> = _pickupDate
@@ -36,11 +42,46 @@ class OrderViewModel: ViewModel() {
     }
 
     fun hasNoFlavorSet(): Boolean {
-        return _cupCakeFlavor.value.isNullOrEmpty()
+        return _cupCakeFlavors.value.isNullOrEmpty()
     }
 
-    fun setFlavor(desiredFlavor: String){
-        _cupCakeFlavor.value = desiredFlavor
+    fun addFlavor(desiredFlavor: String){
+        if (_totalOrderedQuantity.value?.toInt() ?: 0 < _orderQuantity.value?.toInt() ?: -1)
+        {
+            _totalOrderedQuantity.value = _totalOrderedQuantity.value!! + 1
+            _cupCakeFlavors.value?.add(desiredFlavor)
+            _orderedQuantityPerFlavor.value?.set(desiredFlavor,
+                _orderedQuantityPerFlavor.value!![desiredFlavor]!! + 1
+            )
+        }
+    }
+
+    fun removeFlavor(undesiredFlavor: String){
+        if (_totalOrderedQuantity.value?.toInt() ?: 0 > 0)
+        {
+            _totalOrderedQuantity.value = _totalOrderedQuantity.value!! - 1
+            _cupCakeFlavors.value?.remove(undesiredFlavor)
+            _orderedQuantityPerFlavor.value?.set(undesiredFlavor,
+                _orderedQuantityPerFlavor.value!![undesiredFlavor]!! - 1
+            )
+        }
+    }
+
+    fun orderedQuantityPerFlavor(flavour: String): String{
+        return _orderedQuantityPerFlavor.value?.get(flavour).toString()
+    }
+
+    fun cupCakeFlavorsToString():String{
+        val keys = _orderedQuantityPerFlavor.value?.keys?.filter{
+                key -> _orderedQuantityPerFlavor.value?.get(key)!! > 0 }
+        val itemToString = mutableListOf<String>()
+
+        if (keys != null) {
+            for (key in keys){
+                itemToString.add("(${_orderedQuantityPerFlavor.value?.get(key)}) $key")
+            }
+        }
+        return itemToString.joinToString(", ", postfix = ".")
     }
 
     fun setDate(pickupDate: String){
@@ -69,15 +110,25 @@ class OrderViewModel: ViewModel() {
         _price.value = totalPrice
     }
 
+    fun orderComplete(): Boolean{
+        return _totalOrderedQuantity.value!!.toInt() == _orderQuantity.value!!.toInt()
+    }
+
     /*
-* Re-initializes the cupCake app data.
-*/
+    * Re-initializes the cupCake app data.
+    */
     fun resetOrder() {
         _orderQuantity.value = 0
-        _cupCakeFlavor.value = ""
+        _totalOrderedQuantity.value = 0
+        _cupCakeFlavors.value = mutableListOf()
+        _orderedQuantityPerFlavor.value = mutableMapOf()
         _pickupDate.value = pickupDatesValues()[0]
         _price.value = 0.0
         calculatePrice()
+
+        for (i in allFlavorList){
+            _orderedQuantityPerFlavor.value!![i] = 0
+        }
     }
 
 }

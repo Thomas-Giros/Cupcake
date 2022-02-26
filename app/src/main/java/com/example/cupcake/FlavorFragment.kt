@@ -19,11 +19,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.cupcake.adapter.FlavourItemAdapter
 import com.example.cupcake.databinding.FragmentFlavorBinding
 import com.example.cupcake.model.OrderViewModel
+import com.example.cupcake.model.allFlavorList
 
 /**
  * [FlavorFragment] allows a user to choose a cupcake flavor for the order.
@@ -40,7 +45,7 @@ class FlavorFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val fragmentBinding = FragmentFlavorBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
@@ -48,8 +53,14 @@ class FlavorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Initialize data.
+        val myDataset = allFlavorList
+
 
         binding?.apply {
+            flavourRecyclerView.adapter = FlavourItemAdapter( myDataset, sharedViewModel)
+            flavourRecyclerView.setHasFixedSize(true)
+            flavourRecyclerView.layoutManager = LinearLayoutManager(context)
             flavorFragment = this@FlavorFragment
             viewModel = sharedViewModel
             lifecycleOwner = viewLifecycleOwner
@@ -62,10 +73,16 @@ class FlavorFragment : Fragment() {
      */
     fun goToNextScreen() {
         //Toast.makeText(activity, "Next", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_flavorFragment_to_pickupFragment)
+        if (sharedViewModel.orderComplete())
+            findNavController().navigate(R.id.action_flavorFragment_to_pickupFragment)
+        else
+            Toast.makeText(activity,"You must complete your order",Toast.LENGTH_SHORT).show()
     }
 
-
+    fun cancelOrder() {
+        sharedViewModel.resetOrder()
+        findNavController().navigate(R.id.action_flavorFragment_to_startFragment)
+    }
 
     /**
      * This fragment lifecycle method is called when the view hierarchy associated with the fragment

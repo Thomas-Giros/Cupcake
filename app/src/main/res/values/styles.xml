@@ -51,6 +51,14 @@
         <item name="android:textAppearance">?attr/textAppearanceBody1</item>
     </style>
 
+    <!-- Checkbox Style -->
+    <style name="Widget.Cupcake.CheckBox"
+        parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:paddingEnd">@dimen/radio_button_padding</item>
+        <item name="android:paddingStart">@dimen/radio_button_padding</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+
     <!-- Divider style -->
     <style name="Widget.Cupcake.Divider" parent="">
         <item name="android:background">?attr/dividerHorizontal</item>

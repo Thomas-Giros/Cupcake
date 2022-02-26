@@ -40,7 +40,7 @@ class PickupFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val fragmentBinding = FragmentPickupBinding.inflate(inflater, container, false)
         binding = fragmentBinding
         return fragmentBinding.root
@@ -62,6 +62,11 @@ class PickupFragment : Fragment() {
     fun goToNextScreen() {
         //Toast.makeText(activity, "Next", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_pickupFragment_to_summaryFragment)
+    }
+
+    fun cancelOrder() {
+        sharedViewModel.resetOrder()
+        findNavController().navigate(R.id.action_pickupFragment_to_startFragment)
     }
 
     /**
