@@ -123,6 +123,30 @@
                     android:layout_marginBottom="@dimen/margin_between_elements" />
 
                 <TextView
+                    android:id="@+id/pickup_address"
+                    style="@style/Widget.Cupcake.TextView.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pickup_address" />
+
+                <TextView
+                    android:id="@+id/address"
+                    style="@style/Widget.Cupcake.TextView.OrderSummary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/order_summary_margin"
+                    tools:text="50 baker street"
+                    android:text="@{viewModel.clientAdress}"/>
+
+                <View
+                    android:id="@+id/divider4"
+                    style="@style/Widget.Cupcake.Divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/side_margin"
+                    android:layout_marginBottom="@dimen/margin_between_elements" />
+
+                <TextView
                     android:id="@+id/total"
                     style="@style/Widget.Cupcake.TextView.FinalPrice"
                     android:layout_width="wrap_content"

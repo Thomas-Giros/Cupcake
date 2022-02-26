@@ -66,9 +66,11 @@ class SummaryFragment : Fragment() {
         val quantity = (sharedViewModel.orderQuantity.value ?: 0)
         val orderSummary = getString(
             R.string.order_details,
+            sharedViewModel.clientName.value.toString(),
             resources.getQuantityString(R.plurals.cupcakes, quantity, quantity),
             sharedViewModel.cupCakeFlavorsToString(),
             sharedViewModel.pickupDate.value.toString(),
+            sharedViewModel.clientAdress.value.toString(),
             sharedViewModel.price.value.toString()
         )
         val intent = Intent(Intent.ACTION_SEND)

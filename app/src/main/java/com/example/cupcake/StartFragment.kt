@@ -60,7 +60,7 @@ class StartFragment : Fragment() {
         //Toast.makeText(activity, "Ordered $quantity cupcake(s)", Toast.LENGTH_SHORT).show()
         sharedViewModel.setQuantity(quantity)
 
-        findNavController().navigate(R.id.action_startFragment_to_flavorFragment)
+        findNavController().navigate(R.id.action_startFragment_to_pickupFragment)
 
     }
 

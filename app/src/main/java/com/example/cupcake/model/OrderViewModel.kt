@@ -27,6 +27,12 @@ class OrderViewModel: ViewModel() {
     private var _pickupDate = MutableLiveData<String>()
     val pickupDate: LiveData<String> = _pickupDate
 
+    private var _clientName = MutableLiveData<String>()
+    val clientName: LiveData<String> = _clientName
+
+    private var _clientAdress = MutableLiveData<String>()
+    val clientAdress: LiveData<String> = _clientAdress
+
     private var _price = MutableLiveData<Double>()
     val price: LiveData<String> = Transformations.map(_price) {
         NumberFormat.getCurrencyInstance().format(it)
@@ -36,13 +42,26 @@ class OrderViewModel: ViewModel() {
         resetOrder()
     }
 
+    fun setClientName(name: String){
+        _clientName.value = name
+    }
+
+    fun setClientAdress(address: String){
+        _clientAdress.value = address
+    }
+
     fun setQuantity(numberCupcakes: Int){
         _orderQuantity.value = numberCupcakes
         calculatePrice()
     }
 
-    fun hasNoFlavorSet(): Boolean {
-        return _cupCakeFlavors.value.isNullOrEmpty()
+    fun getFlavorList(): List<String>{
+        val listOfFlavors: List<String>
+        if (_pickupDate.value!!.uppercase().contains("SAT")   || _pickupDate.value!!.uppercase().contains("SUN"))
+            listOfFlavors = allFlavorList + bonusFlavorList
+        else
+            listOfFlavors = allFlavorList
+        return listOfFlavors
     }
 
     fun addFlavor(desiredFlavor: String){
@@ -86,6 +105,7 @@ class OrderViewModel: ViewModel() {
 
     fun setDate(pickupDate: String){
         _pickupDate.value = pickupDate
+        resetFlavorList()
         calculatePrice()
     }
 
@@ -114,6 +134,14 @@ class OrderViewModel: ViewModel() {
         return _totalOrderedQuantity.value!!.toInt() == _orderQuantity.value!!.toInt()
     }
 
+
+    fun resetFlavorList() {
+        _totalOrderedQuantity.value = 0
+        _orderedQuantityPerFlavor.value = mutableMapOf()
+        for (i in getFlavorList()){
+            _orderedQuantityPerFlavor.value!![i] = 0
+        }
+    }
     /*
     * Re-initializes the cupCake app data.
     */
@@ -124,11 +152,11 @@ class OrderViewModel: ViewModel() {
         _orderedQuantityPerFlavor.value = mutableMapOf()
         _pickupDate.value = pickupDatesValues()[0]
         _price.value = 0.0
+        _clientAdress.value = ""
+        _clientName.value = ""
         calculatePrice()
 
-        for (i in allFlavorList){
-            _orderedQuantityPerFlavor.value!![i] = 0
-        }
+        resetFlavorList()
     }
 
 }

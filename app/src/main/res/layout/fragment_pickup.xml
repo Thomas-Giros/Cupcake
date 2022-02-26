@@ -92,11 +92,11 @@
                 style="@style/Widget.Cupcake.Divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/side_margin"
-                android:layout_marginBottom="@dimen/side_margin"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.531"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_options" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAdress" />
 
             <TextView
                 android:id="@+id/subtotal"
@@ -136,6 +136,56 @@
                 app:layout_constraintTop_toTopOf="@+id/next_button"
                 app:layout_constraintVertical_bias="1.0"
                 style="?attr/materialButtonOutlinedStyle"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputEditTextName"
+                    style="@style/Widget.Cupcake.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_name"
+                    app:layout_constraintBottom_toBottomOf="@+id/divider"
+                    tools:layout_editor_absoluteX="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutAdress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TextInputEditTextAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_address"
+                    app:layout_constraintBottom_toBottomOf="@+id/divider"
+                    tools:layout_editor_absoluteX="16dp"
+                    style="@style/Widget.Cupcake.TextView"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:padding="@dimen/side_margin"
+                android:layout_marginTop="16dp"
+                app:layout_constraintHorizontal_bias="0.531"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_options" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

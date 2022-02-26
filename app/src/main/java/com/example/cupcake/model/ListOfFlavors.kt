@@ -4,12 +4,15 @@ package com.example.cupcake.model
 val allFlavorList: List<String> =
     listOf("vanilla",
         "chocolate",
-        "salted caramel",
         "coffee",
-        "tiramisu",
-        "dulce de leche",
         "strawberry",
         "blueberry",
-        "rainbow",
-        "moka"
+        "rainbow"
 )
+
+val bonusFlavorList: List<String> =
+    listOf("salted caramel",
+        "tiramisu",
+        "dulce de leche",
+        "moka"
+    )

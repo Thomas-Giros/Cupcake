@@ -54,7 +54,7 @@ class FlavorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Initialize data.
-        val myDataset = allFlavorList
+        val myDataset = sharedViewModel.getFlavorList()
 
 
         binding?.apply {
@@ -74,7 +74,7 @@ class FlavorFragment : Fragment() {
     fun goToNextScreen() {
         //Toast.makeText(activity, "Next", Toast.LENGTH_SHORT).show()
         if (sharedViewModel.orderComplete())
-            findNavController().navigate(R.id.action_flavorFragment_to_pickupFragment)
+            findNavController().navigate(R.id.action_flavorFragment_to_summaryFragment)
         else
             Toast.makeText(activity,"You must complete your order",Toast.LENGTH_SHORT).show()
     }

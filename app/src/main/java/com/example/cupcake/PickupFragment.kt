@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -60,8 +61,13 @@ class PickupFragment : Fragment() {
      * Navigate to the next screen to see the order summary.
      */
     fun goToNextScreen() {
-        //Toast.makeText(activity, "Next", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_pickupFragment_to_summaryFragment)
+        sharedViewModel.setClientName(binding?.pickupFragment?.binding?.TextInputEditTextName?.text.toString())
+        sharedViewModel.setClientAdress(binding?.pickupFragment?.binding?.TextInputEditTextAddress?.text.toString())
+
+        if (sharedViewModel.clientAdress.value.isNullOrEmpty() || sharedViewModel.clientName.value.isNullOrEmpty() )
+            Toast.makeText(context,"Information missing",Toast.LENGTH_SHORT).show()
+        else
+            findNavController().navigate(R.id.action_pickupFragment_to_flavorFragment)
     }
 
     fun cancelOrder() {
